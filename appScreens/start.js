@@ -37,7 +37,7 @@ const Start = ({ navigation }) => {
           onPress={() => navigation.navigate("welcome")}
         >
           <Text style={styles.nextButtonText}>Get start</Text>
-          <Text style={styles.nextButtonText}>Get start</Text>
+         
         </TouchableOpacity>
       </View>
     </View>
