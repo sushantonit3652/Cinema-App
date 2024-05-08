@@ -10,6 +10,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import styles from "./styles";
 const Start = ({ navigation }) => {
+
   return (
     <View style={styles.startContainer}>
       <View style={styles.startScroll}>
@@ -34,7 +35,7 @@ const Start = ({ navigation }) => {
         </View>
         <TouchableOpacity
           style={styles.nextButton}
-          onPress={() => navigation.navigate("welcome")}
+          onPress={() => navigation.navigate("login")}
         >
           <Text style={styles.nextButtonText}>Get start</Text>
          

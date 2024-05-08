@@ -1,120 +1,69 @@
 const express = require("express");
 const app = express();
-// You can change this to any port you prefer
 const mongoose = require("mongoose");
+app.use(express.json());
+require("./userDetails.js");
 
-// Define the user schema
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-});
+const mongoUrl =
+  "mongodb+srv://sushantonit:onit3652@cluster0.pdql0w2.mongodb.net/your_database_name"; // Replace 'your_database_name' with your actual database name
 
-// Create a User model based on the user schema
-const User = mongoose.model("User", userSchema);
-
-//  ab hum mmongodb se conndect kr rhe hai
-
-const uri =
-  "mongodb+srv://sushantonit:cinema123@cluster0.32nz4hw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0&ssl=true";
-
-
-// Connect to MongoDB
 mongoose
-  .connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(mongoUrl)
   .then(() => {
-    console.log("Connected to MongoDB");
+    console.log("Database Connected");
   })
-  .catch((err) => {
-    console.error("Error connecting to MongoDB:", err);
+  .catch((e) => {
+    console.log(e);
   });
-// Define a route
+
+const User = mongoose.model("UserInfo");
+
 app.get("/", (req, res) => {
-  res.send("Hello, Express!");
+  res.send("welcome");
 });
 
-const bodyParser = require("body-parser");
-const bcrypt = require("bcrypt");
-const { v4: uuidv4 } = require("uuid");
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
 
-app.use(bodyParser.json());
-
-// Simulated user database
-let users = [];
-
-// POST /api/auth
-// POST /api/auth
-app.post("/api/auth", (req, res) => {
-  const { email, password, action } = req.body;
-
-  console.log('Request received:', { email, action });
-
-  if (action === "login") {
-    // Login action
-    console.log("Login attempt:", { email });
-
-    const user = users.find((user) => user.email === email);
-
+  try {
+    let user = await User.findOne({ email: email });
     if (!user) {
-      console.log("User not found:", { email });
-      return res.status(404).json({ message: "User not found" });
+      // If user is not found, create a new user
+      user = await User.create({ email, password });
+      return res
+        .status(200)
+        .send({ status: "ok", data: "User created and logged in" });
     }
-
-    if (!bcrypt.compareSync(password, user.password)) {
-      console.log("Wrong password:", { email });
-      return res.status(401).json({ message: "Wrong password" });
+    // If user is found, check the password
+    if (user.password === password) {
+      return res.send({ status: "ok", data: "Login successful" });
+    } else {
+      return res.status(400).send({ error: "Invalid password" });
     }
-
-    // Successful login
-    console.log("Login successful:", { email });
-    res
-      .status(200)
-      .json({ message: "Login successful", user: { email: user.email } });
-  } else if (action === "register") {
-    // Registration action
-    console.log("Registration attempt:", { email });
-
-    const existingUser = users.find((user) => user.email === email);
-
-    if (existingUser) {
-      console.log("Email already registered:", { email });
-      return res.status(409).json({ message: "Email already registered" });
-    }
-
-    const newUser = {
-      id: uuidv4(),
-      email: email,
-      password: bcrypt.hashSync(password, 10),
-    };
-
-    users.push(newUser);
-
-    // User registration successful
-    console.log("User registered successfully:", { email });
-    res
-      .status(201)
-      .json({
-        message: "User registered successfully",
-        user: { email: newUser.email },
-      });
-  } else {
-    // Invalid action
-    console.log("Invalid action:", { action });
-    res.status(400).json({ message: "Invalid action" });
+  } catch (error) {
+    return res.status(500).send({ error: "Internal server error" });
   }
 });
 
+app.post("/register", async (req, res) => {
+  const { email, password } = req.body;
 
-// Start the server
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  const oldUser = await User.findOne({ email: email });
+  if (oldUser) {
+    return res.send("e2222");
+  }
+  try {
+    await User.create({
+      email: email,
+      password: password,
+    });
+    res.send({ status: "ok", data: "User Created" });
+  } catch (error) {
+    res.send({ status: "error", data: error.message });
+  }
+});
+
+const port = 3000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });

@@ -7,7 +7,6 @@ import {
   FlatList,
   StyleSheet,
 } from "react-native";
-import CountryPicker from "react-native-country-picker-modal";
 import styles from "./styles";
 
 const countriesData = [
@@ -74,7 +73,9 @@ const Welcome = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.nextButton}
-          onPress={() => navigation.navigate("login")}
+          onPress={() =>
+            navigation.navigate("homeScreen", { passedData: data })
+          }
         >
           <Text style={styles.nextButtonText}>Continue</Text>
         </TouchableOpacity>

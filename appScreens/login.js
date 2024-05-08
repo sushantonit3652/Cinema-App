@@ -1,9 +1,18 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, ScrollView, TouchableOpacity, Alert } from "react-native";
-import axios from 'axios'; // Import Axios once
+import {
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import axios from "axios";
 import styles from "./styles";
 
 const Login = ({ navigation }) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -17,33 +26,44 @@ const Login = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://192.168.1.33/api/auth', {
-        action: 'login',
-        email,
-        password,
+      if (!email || !password) {
+        // Check if email or password is empty
+        Alert.alert("Error", "Please fill in both email and password");
+        return;
+      }
+
+      const response = await fetch("http://192.168.1.33:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
       });
-  
-      console.log('Login attempt:', { email });
-  
-      if (response.data.message === 'Login successful') {
-        console.log('Login successful:', { email });
-        // Navigate to the next screen on successful login
-        navigation.navigate('NextScreen');
-      } else if (response.data.message === 'User not found') {
-        console.log('User not found:', { email });
-        // If user is not found, attempt to register
-        handleRegister();
+
+      if (response.status === 200) {
+        const data = await response.json();
+        if (data.status === "ok") {
+          // Navigate to the home screen or next screen on successful login
+          navigation.navigate("welcome");
+        } else {
+          // Check if the error message is "Invalid password" and show an alert
+          if (data.error === "Invalid password") {
+            Alert.alert("Error", "Invalid password");
+          } else {
+            Alert.alert("Error", "Invalid credentials");
+          }
+        }
+      } else if (response.status === 400) {
+        Alert.alert("Error", "Invalid password");
       } else {
-        console.log('Error logging in:', response.data.message);
-        // Handle other responses, such as incorrect password
-        Alert.alert('Error', response.data.message);
+        console.error("Server Error:", response.status);
+        Alert.alert("Error", "Server Error");
       }
     } catch (error) {
-      console.error('Error logging in:', error);
-      Alert.alert('Error', 'Internal server error');
+      console.error("Error logging in:", error);
+      Alert.alert("Error", "Internal server error");
     }
   };
-  
 
   const showAlert = () => {
     Alert.alert("Alert", "Forget Password", [
@@ -100,7 +120,12 @@ const Login = ({ navigation }) => {
               <Text style={styles.login__skipText}>
                 Don't want to create an account
               </Text>
-              <Text style={styles.login__skipLink} onPress={skipit}>Skip it</Text>
+              <Text
+                style={styles.login__skipLink}
+                onPress={() => navigation.navigate("homeScreen")}
+              >
+                Skip it
+              </Text>
             </View>
           </View>
         </View>
