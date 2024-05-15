@@ -74,7 +74,7 @@ const Welcome = ({ navigation }) => {
         <TouchableOpacity
           style={styles.nextButton}
           onPress={() =>
-            navigation.navigate("homeScreen", { passedData: data })
+            navigation.navigate("homeScreen")
           }
         >
           <Text style={styles.nextButtonText}>Continue</Text>

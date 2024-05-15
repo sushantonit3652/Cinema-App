@@ -5,6 +5,9 @@ import Start from "./appScreens/start";
 import Welcome from "./appScreens/welcome";
 import Login from "./appScreens/login";
 import HomeScreen from "./appScreens/homeScreen";
+import MovieDetails from "./appScreens/movieDetails";
+
+
 
 const Stack = createNativeStackNavigator();
 
@@ -24,7 +27,8 @@ const MyStack = () => {
         />
         <Stack.Screen name="login" component={Login} />
         <Stack.Screen name="homeScreen" component={HomeScreen} />
-     
+        <Stack.Screen name="movieDetails" component={MovieDetails}  />
+      
       </Stack.Navigator>
     </NavigationContainer>
   );

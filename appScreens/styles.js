@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   startScroll: {
     flex: 1,
     width: "100%",
-    padding:20,
+    padding: 20,
   },
   nextButton: {
     backgroundColor: "#DA004E",
@@ -18,11 +18,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: 56,
-    marginVertical:10,
+    marginVertical: 10,
   },
   nextButtonText: {
     fontSize: 18,
-    color:"white",
+    color: "white",
     fontWeight: "500",
   },
   input: {
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   //start Screen
   start__src: {
-    flex:1,
+    flex: 1,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -122,9 +122,9 @@ const styles = StyleSheet.create({
 
   //login screen
   login__scroll: {
-    flex:1,
+    flex: 1,
     width: "100%",
-   alignContent:"center"
+    alignContent: "center",
   },
   login__cinemacnt: {
     alignItems: "center",
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
   },
-  
+
   login__buttoncnt: {
     alignItems: "center",
     width: "100%",
@@ -175,6 +175,133 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
   },
+  //home Screen
+  home__searchbackground: {
+    flexDirection: "row",
+    height: 54,
+    width: "100%",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#DA004E",
+  },
+  home__serchtextinput: {
+    paddingHorizontal: 20,
+    height: "100%",
+    width: "100%",
+    fontSize: 20,
+  },
+  searchicon: { height: 20, width: 20, marginHorizontal: 10 },
+  home__header: { color: "#DA004E", fontSize: 15, fontWeight: "500" },
+  home__scrollview: {
+    paddingHorizontal: 10,
+  },
+  headerText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginVertical: 10,
+    marginLeft: 10,
+    color: "#DA004E",
+  },
+
+  // movie api styling
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: "#fff",
+    height: 200,
+  },
+  movieItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 10,
+    borderRadius: 5,
+  },
+  movieImage: {
+    width: 80,
+    height: 80,
+    marginRight: 10,
+    borderRadius: 5,
+  },
+  movieName: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  movieDuration: {
+    fontSize: 16,
+    color: "#888",
+  },
+  movieCard: {
+    margin: 10,
+    padding: 10,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  moviePoster: {
+    width: 150,
+    height: 200,
+    marginBottom: 10,
+    borderRadius: 8,
+  },
+  movieTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+
+  movieCard: {
+    margin: 10,
+    borderRadius: 8,
+    overflow: "hidden",
+    backgroundColor: "#f0f0f0",
+    alignItems: "center",
+  },
+  moviePoster: {
+    width: 150,
+    height: 200,
+  },
+  movieTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginVertical: 5,
+  },
+  buttonContainer: {
+    marginVertical: 10,
+    alignItems: "center",
+  },
+
+  //movieDetail Screen
+  movieContainer: { flex: 1 },
+  movieDetail__background: {
+    flex: 1,
+    width: "100%",
+    // position: "absolute",
+  },
+  movidetail__fottrbackround: {
+    padding: 30,
+  },
+  movidetail__sciencebacground: {
+    flexDirection: "row",
+    justifyContent: "space-between",alignSelf: 'stretch',
+  },
+  sciencetext: { fontSize: 16, color: "#000", fontWeight: "500" },
+  movidetail__ditailbackground: {
+    flexDirection: "row",
+    justifyContent: "space-between",paddingVertical:20
+  },
+  movidetail__datebackground: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
+  moviedetails__relasebacground: { paddingHorizontal: 10 },
+  movidetail__relasetext: { fontSize: 12, fontWeight: "300", color: "#000" },
 });
 
 export default styles;
