@@ -10,6 +10,7 @@ import {
 import axios from "axios";
 import styles from "./styles";
 
+
 const Login = ({ navigation }) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -45,6 +46,12 @@ const Login = ({ navigation }) => {
         if (data.status === "ok") {
           // Navigate to the home screen or next screen on successful login
           navigation.navigate("welcome");
+        } else if (data.status === "loginok") {
+          // Navigate to the home screen or next screen on successful login
+          navigation.navigate("homeScreen");
+        } else if (data.status === "adminloginok") {
+          // Navigate to the home screen or next screen on successful login
+          navigation.navigate("adminPanel");
         } else {
           // Check if the error message is "Invalid password" and show an alert
           if (data.error === "Invalid password") {
@@ -56,7 +63,10 @@ const Login = ({ navigation }) => {
       } else if (response.status === 400) {
         Alert.alert("Error", "Invalid password");
       } else {
+        const data = await response.json();
+
         console.error("Server Error:", response.status);
+        console.error("Server Error:", data.error);
         Alert.alert("Error", "Server Error");
       }
     } catch (error) {
@@ -89,6 +99,7 @@ const Login = ({ navigation }) => {
             <View style={styles.login__inputcnt}>
               <Text>Email</Text>
               <TextInput
+                xtInput
                 style={styles.input}
                 onChangeText={handleEmailChange}
                 value={email}

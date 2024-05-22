@@ -302,6 +302,19 @@ const styles = StyleSheet.create({
   },
   moviedetails__relasebacground: { paddingHorizontal: 10 },
   movidetail__relasetext: { fontSize: 12, fontWeight: "300", color: "#000" },
+
+  //move card
+  poster: {
+    width: 105,
+    height: 180,
+    resizeMode: "cover",
+    borderRadius: 10,
+    marginHorizontal: 10,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });
 
 export default styles;
