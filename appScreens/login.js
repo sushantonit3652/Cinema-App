@@ -13,6 +13,9 @@ import styles from "./styles";
 
 const Login = ({ navigation }) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // At least 8 characters, including one letter and one number
+
+ 
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,6 +36,18 @@ const Login = ({ navigation }) => {
         return;
       }
 
+      // if (!emailRegex.test(email)) {
+      //   Alert.alert("Error", "Please enter a valid email address");
+      //   return;
+      // }
+
+      // if (!passwordRegex.test(password)) {
+      //   Alert.alert(
+      //     "Error",
+      //     "Password must be at least 8 characters long and include both letters and numbers"
+      //   );
+      //   return;
+      // }
       const response = await fetch("http://192.168.1.33:3000/login", {
         method: "POST",
         headers: {

@@ -5,9 +5,12 @@ import Start from "./appScreens/start";
 import Welcome from "./appScreens/welcome";
 import Login from "./appScreens/login";
 import HomeScreen from "./appScreens/homeScreen";
-
 import MovieDetails from "./appScreens/movieDetails";
 import AdminPanel from "./appScreens/adminPanel";
+import VideoScreen from "./appScreens/videoScreen";
+import AddMovies from "./appScreens/addmovies";
+import ViewMovies from "./appScreens/viewMovies";
+import UsersScreen from "./appScreens/usersScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +34,26 @@ const MyStack = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="adminPanel"
+          component={AdminPanel}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="addMovies"
+          component={AddMovies}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="viewMovies"
+          component={ViewMovies}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="usersScreen"
+          component={UsersScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name="homeScreen"
           component={HomeScreen}
           options={{ headerShown: false }}
@@ -40,9 +63,9 @@ const MyStack = () => {
           component={MovieDetails}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
-          name="adminPanel"
-          component={AdminPanel}
+        <Stack.Screen
+          name="videoScreen"
+          component={VideoScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

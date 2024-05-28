@@ -275,8 +275,9 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     alignItems: "center",
   },
-
-  //movieDetail Screen
+  home__moviename:{fontWeight:'600',marginHorizontal:11,marginVertical:3},
+  movieCard_cnt:{justifyContent:'center',},
+  //movieDetail Screen,
   movieContainer: { flex: 1 },
   movieDetail__background: {
     flex: 1,
@@ -314,6 +315,64 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "bold",
+  }, movieContainer: {
+    flex: 1,
+  },
+  movieDetail__background: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  movieDetail__content: {
+    padding: 20,
+  },
+  movieTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  movieGenre: {
+    fontSize: 18,
+    color: '#fff',
+  },
+  movieDuration: {
+    fontSize: 16,
+    color: '#fff',
+  },
+  movieReleaseDate: {
+    fontSize: 16,
+    color: '#fff',
+  },
+  movieLanguage: {
+    fontSize: 16,
+    color: '#fff',
+  },
+  movieDetail__footer: {
+    padding: 20,
+  },
+  nextButton: {
+    backgroundColor: '#1e90ff',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  nextButtonText: {
+    color: '#fff',
+    fontSize: 18,
+  },
+  loader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorText: {
+    fontSize: 18,
+    color: 'red',
   },
 });
 

@@ -12,7 +12,6 @@ import {
   SafeAreaView,
 } from "react-native";
 import styles from "./styles";
-import MovieCard from "./MovieCard"; // Import MovieCard component
 
 const HomeScreen = ({ navigation }) => {
   const [movieList, setMovieList] = useState([]);
@@ -37,6 +36,7 @@ const HomeScreen = ({ navigation }) => {
 
         setMovieList(data);
       } catch (error) {
+        console.error("new error:", data);
         console.error("Error fetching movies:", error);
       }
     };
@@ -62,7 +62,7 @@ const HomeScreen = ({ navigation }) => {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View>
+        <View style={styles.movieCard_cnt}>
           <Text style={styles.headerText}>Continue Watching</Text>
           {movieList.length > 0 ? (
             <FlatList
@@ -73,12 +73,15 @@ const HomeScreen = ({ navigation }) => {
               renderItem={({ item }) => (
                 <TouchableOpacity
                   style={styles.card}
-                  onPress={() => navigation.navigate("movieDetails")}
+                  onPress={() =>
+                    navigation.navigate("movieDetails", { movieId: item._id })
+                  }
                 >
                   <Image
                     source={{ uri: item.posterUrl }}
                     style={styles.poster}
                   />
+                  <Text style={styles.home__moviename}>{item.title}</Text>
                 </TouchableOpacity>
               )}
             />
@@ -88,63 +91,18 @@ const HomeScreen = ({ navigation }) => {
         </View>
         <View>
           <Text style={styles.headerText}>Trending Movies</Text>
-          <FlatList
-            showsHorizontalScrollIndicator={false}
-            horizontal
-            data={movieList}
-            keyExtractor={(item) => item.imdbID}
-            renderItem={({ item }) => (
-              <MovieCard title={item.Title} posterUrl={item.Poster} />
-            )}
-          />
         </View>
         <View>
           <Text style={styles.headerText}>New Release</Text>
-          <FlatList
-            showsHorizontalScrollIndicator={false}
-            horizontal
-            data={movieList}
-            keyExtractor={(item) => item.imdbID}
-            renderItem={({ item }) => (
-              <MovieCard title={item.Title} posterUrl={item.Poster} />
-            )}
-          />
         </View>
         <View>
           <Text style={styles.headerText}>Full HD Movies</Text>
-          <FlatList
-            showsHorizontalScrollIndicator={false}
-            horizontal
-            data={movieList}
-            keyExtractor={(item) => item.imdbID}
-            renderItem={({ item }) => (
-              <MovieCard title={item.Title} posterUrl={item.Poster} />
-            )}
-          />
         </View>
         <View>
           <Text style={styles.headerText}>Up Comming</Text>
-          <FlatList
-            showsHorizontalScrollIndicator={false}
-            horizontal
-            data={movieList}
-            keyExtractor={(item) => item.imdbID}
-            renderItem={({ item }) => (
-              <MovieCard title={item.Title} posterUrl={item.Poster} />
-            )}
-          />
         </View>
         <View>
           <Text style={styles.headerText}>HBO</Text>
-          <FlatList
-            showsHorizontalScrollIndicator={false}
-            horizontal
-            data={movieList}
-            keyExtractor={(item) => item.imdbID}
-            renderItem={({ item }) => (
-              <MovieCard title={item.Title} posterUrl={item.Poster} />
-            )}
-          />
         </View>
       </ScrollView>
     </SafeAreaView>

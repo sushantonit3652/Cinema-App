@@ -92,9 +92,10 @@ const movieSchema = new mongoose.Schema({
   collection: "movies",
 });
 
-// Create a model based on the schema
+// Create a model based on the schema save movie
 const Movie = mongoose.model("Movie", movieSchema);
 app.use(express.urlencoded({ extended: true }));
+
 app.post("/movies", async (req, res) => {
   try {
     const movieData = req.body;
@@ -107,6 +108,17 @@ app.post("/movies", async (req, res) => {
   }
 });
 
+//movies view admin
+app.get('/api/movies', async (req, res) => {
+  try {
+    const movies = await Movie.find().select('id name language'); // Select only id, name, and createdAt
+    res.json(movies);
+  } catch (error) {
+    console.error("Error fetching movies:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // ?fetch movies
 
 app.post('/api/movies/recent', async (req, res) => {
@@ -115,6 +127,8 @@ app.post('/api/movies/recent', async (req, res) => {
       const movieList = recentMovies.map(movie => ({
           _id: movie._id,
           posterUrl: movie.poster,
+          title: movie.name
+
       }));
 
       res.json(movieList);
@@ -123,6 +137,26 @@ app.post('/api/movies/recent', async (req, res) => {
       res.status(500).json({ error: 'Server error' });
   }
 });
+//fetch movie details
+app.post('/api/movies/details', async (req, res) => {
+  const movieId = req.headers['movie-id'] || req.body.movieId;
+  console.log(movieId)
+  
+  if (!movieId) {
+    return res.status(400).json({ error: 'Movie ID is required' });
+  }
+
+  try {
+    const movie = await Movie.findById(movieId); // Assuming you're using Mongoose
+    if (!movie) {
+      return res.status(404).json({ error: 'Movie not found' });
+    }
+    res.json(movie);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 
 const port = 3000;
 app.listen(port, () => {
