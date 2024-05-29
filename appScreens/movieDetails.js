@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, ImageBackground, TouchableOpacity, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  ImageBackground,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
+import axios from "axios";
 import styles from "./styles";
-
-const MovieDetails = ({ navigation , route}) => {
+import BASE_URL from "../backend/config";
+const MovieDetails = ({ navigation, route }) => {
   const { movieId } = route.params;
   const [movieDetails, setMovieDetails] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -11,21 +19,24 @@ const MovieDetails = ({ navigation , route}) => {
   useEffect(() => {
     const fetchMovieDetails = async () => {
       try {
-        const response = await fetch(`http://192.168.1.33:3000/api/movies/details`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'movie-id': movieId // sending movieId in headers
-          },
-          body: JSON.stringify({ movieId }) // sending movieId in body
-        });
+        const response = await axios.post(
+          `${BASE_URL}api/movies/details`,
+          { movieId },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "movie-id": movieId,
+            },
+          }
+        );
 
-        if (!response.ok) {
-          throw new Error(`Network response was not ok: ${response.statusText}`);
+        if (response.status !== 200) {
+          throw new Error(
+            `Network response was not ok: ${response.statusText}`
+          );
         }
 
-        const data = await response.json();
-        setMovieDetails(data);
+        setMovieDetails(response.data);
       } catch (fetchError) {
         console.error("Error fetching movie details:", fetchError);
         setError(fetchError.message);
@@ -48,7 +59,9 @@ const MovieDetails = ({ navigation , route}) => {
   if (error) {
     return (
       <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>Error loading movie details: {error}</Text>
+        <Text style={styles.errorText}>
+          Error loading movie details: {error}
+        </Text>
       </View>
     );
   }
@@ -63,41 +76,47 @@ const MovieDetails = ({ navigation , route}) => {
 
   return (
     <View style={styles.movieContainer}>
-    <ImageBackground
-      style={styles.movieDetail__background}
-      resizeMode="cover"
-      source={{ uri: movieDetails.poster }}
-    ></ImageBackground>
-    <View style={styles.movidetail__fottrbackround}>
-      <View style={styles.movidetail__sciencebacground}>
-        <Text style={styles.sciencetext}>{movieDetails.name}</Text>
-        <Text style={styles.sciencetext}>Duration: {movieDetails.duration}</Text>
-      </View>
-      <View style={styles.movidetail__ditailbackground}>
-        <View style={styles.movidetail__datebackground}>
-          <Image source={require("../assets/calendr.png")}></Image>
-          <View style={styles.moviedetails__relasebacground}>
-            <Text style={styles.movidetail__relasetext}>Genre:</Text>
-            <Text style={styles.movidetail__relasetext}>{movieDetails.genre}</Text>
+      <ImageBackground
+        style={styles.movieDetail__background}
+        resizeMode="cover"
+        source={{ uri: movieDetails.poster }}
+      />
+      <View style={styles.movidetail__fottrbackround}>
+        <View style={styles.movidetail__sciencebacground}>
+          <Text style={styles.sciencetext}>{movieDetails.name}</Text>
+          <Text style={styles.sciencetext}>
+            Duration: {movieDetails.duration}
+          </Text>
+        </View>
+        <View style={styles.movidetail__ditailbackground}>
+          <View style={styles.movidetail__datebackground}>
+            <Image source={require("../assets/calendr.png")} />
+            <View style={styles.moviedetails__relasebacground}>
+              <Text style={styles.movidetail__relasetext}>Genre:</Text>
+              <Text style={styles.movidetail__relasetext}>
+                {movieDetails.genre}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.movidetail__datebackground}>
+            <Image source={require("../assets/movieIcon.png")} />
+            <View style={styles.moviedetails__relasebacground}>
+              <Text style={styles.movidetail__relasetext}>
+                {movieDetails.language}
+              </Text>
+            </View>
           </View>
         </View>
-        <View style={styles.movidetail__datebackground}>
-          <Image source={require("../assets/movieIcon.png")}></Image>
-          <View style={styles.moviedetails__relasebacground}>
-            <Text style={styles.movidetail__relasetext}>
-            {movieDetails.language}
-            </Text>
-          </View>
-        </View>
-      </View>
-      <TouchableOpacity
+        <TouchableOpacity
           style={styles.nextButton}
-          onPress={() => navigation.navigate("videoScreen", { videoUrl: movieDetails.video })} // pass videoUrl here
+          onPress={() =>
+            navigation.navigate("videoScreen", { videoUrl: movieDetails.video })
+          }
         >
-        <Text style={styles.nextButtonText}>Watch Movie</Text>
-      </TouchableOpacity>
+          <Text style={styles.nextButtonText}>Watch Movie</Text>
+        </TouchableOpacity>
+      </View>
     </View>
-  </View>
   );
 };
 

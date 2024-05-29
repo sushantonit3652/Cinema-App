@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import axios, { Axios } from "axios";
+import axios from "axios";
 import styles from "./styles";
-
+import BASE_URL from "../backend/config";
 const SignUp = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,50 +24,53 @@ const SignUp = ({ navigation }) => {
   };
 
   const handleConfirmPasswordChange = (text) => {
-    // Function for handling Confirm Password changes
     setConfirmPassword(text);
   };
 
-  function handelSubmit() {
+  const handleSubmit = () => {
+    if (password !== confirmPassword) {
+      Alert.alert("Error", "Passwords do not match");
+      return;
+    }
+
     const userData = {
       email,
       password,
       confirmPassword,
     };
-    axios
-      .post("http://192.168.1.33:3000/register", userData)
-      .then((res) => {
-        console.log(res.data);
 
+    axios
+      .post(`${BASE_URL}register`, userData)
+      .then((res) => {
         if (res.data.status === "ok") {
           navigation.navigate("login");
         } else {
-          console.log("Registration failed:", res.data.message);
+          Alert.alert("Registration failed", res.data.message);
         }
       })
-
       .catch((error) => {
         if (error.response) {
           // The request was made and the server responded with a status code
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
+          console.log("Response data:", error.response.data);
+          console.log("Response status:", error.response.status);
+          console.log("Response headers:", error.response.headers);
+          Alert.alert("Error", error.response.data.message || "Server error");
         } else if (error.request) {
           // The request was made but no response was received
-          console.log(error.request);
+          console.log("Request data:", error.request);
+          Alert.alert("Error", "No response from server");
         } else {
           // Something happened in setting up the request that triggered an error
-          console.log("Error", error.message);
+          console.log("Error message:", error.message);
+          Alert.alert("Error", error.message);
         }
-        console.log(error.config);
       });
-  }
+  };
 
   return (
     <View style={[styles.startContainer, { alignItems: "center" }]}>
       <ScrollView style={styles.startScroll}>
         <View style={styles.login__scroll}>
-          {/* Existing code for login form */}
           <View style={styles.login__inputcnt}>
             <Text>Email</Text>
             <TextInput
@@ -90,7 +93,6 @@ const SignUp = ({ navigation }) => {
               textAlign="center"
             />
           </View>
-          {/* New TextInput for Confirm Password */}
           <View style={styles.login__inputcnt}>
             <Text>Confirm Password</Text>
             <TextInput
@@ -102,13 +104,12 @@ const SignUp = ({ navigation }) => {
               textAlign="center"
             />
           </View>
-          {/* Existing code for Forget Password, Login Button, and Skip Link */}
           <View style={styles.login__buttoncnt}>
             <TouchableOpacity
               style={[styles.nextButton]}
-              onPress={handelSubmit}
+              onPress={handleSubmit}
             >
-              <Text style={styles.nextButtonText}>Log in</Text>
+              <Text style={styles.nextButtonText}>Sign Up</Text>
             </TouchableOpacity>
           </View>
         </View>

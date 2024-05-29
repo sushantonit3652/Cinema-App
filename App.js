@@ -11,6 +11,8 @@ import VideoScreen from "./appScreens/videoScreen";
 import AddMovies from "./appScreens/addmovies";
 import ViewMovies from "./appScreens/viewMovies";
 import UsersScreen from "./appScreens/usersScreen";
+import DeleteMovies from "./appScreens/deleteMovies";
+import UpdateMovies from "./appScreens/upadateMovies";
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +48,16 @@ const MyStack = () => {
         <Stack.Screen
           name="viewMovies"
           component={ViewMovies}
+          options={{ headerShown: false }}
+        />
+ <Stack.Screen
+          name="updateMovies"
+          component={UpdateMovies}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="deleteMovies"
+          component={DeleteMovies}
           options={{ headerShown: false }}
         />
         <Stack.Screen

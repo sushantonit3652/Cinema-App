@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const cors = require('cors');
+const cors = require("cors");
 const mongoose = require("mongoose");
 const multer = require("multer");
 
@@ -11,7 +11,7 @@ const bodyParser = require("body-parser");
 const mongoUrl =
   "mongodb+srv://sushantonit:onit3652@cluster0.pdql0w2.mongodb.net/your_database_name"; // Replace 'your_database_name' with your actual database name
 
-  mongoose
+mongoose
   .connect(mongoUrl)
   .then(() => {
     console.log("Database Connected");
@@ -21,9 +21,7 @@ const mongoUrl =
   });
 app.use(bodyParser.json());
 const User = mongoose.model("UserInfo");
-const Admin = mongoose.model('AdminInfo');
-
-
+const Admin = mongoose.model("AdminInfo");
 
 const db = mongoose.connection; // Define db object after connecting to MongoDB
 
@@ -37,22 +35,22 @@ app.get("/", (req, res) => {
   res.send("welcome");
 });
 
-
-
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-   // console.log("Received login request with email:", email);
+    // console.log("Received login request with email:", email);
 
     let admin_present = await Admin.findOne({ email });
-   // console.log("admin_present query result:", admin_present);
+    // console.log("admin_present query result:", admin_present);
 
     if (admin_present) {
       if (admin_present.password === password) {
-        return res.status(200).send({ status: 'adminloginok', data: 'Admin Login successful' });
+        return res
+          .status(200)
+          .send({ status: "adminloginok", data: "Admin Login successful" });
       } else {
-        return res.status(400).send({ error: 'Invalidpassword' });
+        return res.status(400).send({ error: "Invalidpassword" });
       }
     }
 
@@ -61,36 +59,47 @@ app.post("/login", async (req, res) => {
 
     if (!user_present) {
       user_present = await User.create({ email, password });
-      return res.status(200).send({ status: 'ok', data: 'User created and logged in' });
-    } 
-    else if (user_present.password === password) {
-      return res.status(200).send({ status: 'loginok', data: 'Login successful' });
-    } 
-    else {
-      return res.status(400).send({ error: 'Invalid password' });
+      return res
+        .status(200)
+        .send({ status: "ok", data: "User created and logged in" });
+    } else if (user_present.password === password) {
+      return res
+        .status(200)
+        .send({ status: "loginok", data: "Login successful" });
+    } else {
+      return res.status(400).send({ error: "Invalid password" });
     }
   } catch (error) {
-    console.error('Login Error:', error);
-    return res.status(500).send({ error: 'Internal server error' });
+    console.error("Login Error:", error);
+    return res.status(500).send({ error: "Internal server error" });
   }
 });
 
-
-
 //movie Api
-const movieSchema = new mongoose.Schema({
-  id: { type: String, required: true },
-  name: { type: String, required: true },
-  duration: { type: String, required: true },
-  genre: { type: String, required: true },
-  language: { type: String, required: true },
-  poster: { type: String, required: true},
-  description: { type: String, required: true },
-  video: { type: String, required: true},
-},
-{
-  collection: "movies",
+const movieSchema = new mongoose.Schema(
+  {
+    id: { type: String, required: true },
+    name: { type: String, required: true },
+    duration: { type: String, required: true },
+    genre: { type: String, required: true },
+    language: { type: String, required: true },
+    poster: { type: String, required: true },
+    description: { type: String, required: true },
+    video: { type: String, required: true },
+  },
+  {
+    collection: "movies",
+  }
+);
+
+///user data email password show
+const DetailsSchema = new mongoose.Schema({
+  email: { type: String, unique: true, required: true },
+  password: { type: String, required: true },
+  // Add other fields if necessary
 });
+
+const Details = mongoose.model("Details", DetailsSchema);
 
 // Create a model based on the schema save movie
 const Movie = mongoose.model("Movie", movieSchema);
@@ -109,9 +118,11 @@ app.post("/movies", async (req, res) => {
 });
 
 //movies view admin
-app.get('/api/movies', async (req, res) => {
+app.get("/api/movies", async (req, res) => {
   try {
-    const movies = await Movie.find().select('id name language'); // Select only id, name, and createdAt
+    const movies = await Movie.find().select(
+      "id name language duration genre poster description video"
+    ); // Select only id, name, and createdAt
     res.json(movies);
   } catch (error) {
     console.error("Error fetching movies:", error);
@@ -121,42 +132,87 @@ app.get('/api/movies', async (req, res) => {
 
 // ?fetch movies
 
-app.post('/api/movies/recent', async (req, res) => {
+app.post("/api/movies/recent", async (req, res) => {
   try {
-      const recentMovies = await Movie.find().limit(10); // Fetch recent movies, adjust the limit as needed
-      const movieList = recentMovies.map(movie => ({
-          _id: movie._id,
-          posterUrl: movie.poster,
-          title: movie.name
+    const recentMovies = await Movie.find().limit(18); // Fetch recent movies, adjust the limit as needed
+    const movieList = recentMovies.map((movie) => ({
+      _id: movie._id,
+      posterUrl: movie.poster,
+      title: movie.name,
+    }));
 
-      }));
-
-      res.json(movieList);
+    res.json(movieList);
   } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Server error' });
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
   }
 });
+// user email or password show
+app.get("/api/UserInfo", async (req, res) => {
+  try {
+    const userdetails = await User.find();
+    const userList = userdetails.map((user) => ({
+      _id: user._id,
+      email: user.email,
+      password: user.password,
+    }));
+    res.json(userList);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 //fetch movie details
-app.post('/api/movies/details', async (req, res) => {
-  const movieId = req.headers['movie-id'] || req.body.movieId;
-  console.log(movieId)
-  
+app.post("/api/movies/details", async (req, res) => {
+  const movieId = req.headers["movie-id"] || req.body.movieId;
+  console.log(movieId);
+
   if (!movieId) {
-    return res.status(400).json({ error: 'Movie ID is required' });
+    return res.status(400).json({ error: "Movie ID is required" });
   }
 
   try {
     const movie = await Movie.findById(movieId); // Assuming you're using Mongoose
     if (!movie) {
-      return res.status(404).json({ error: 'Movie not found' });
+      return res.status(404).json({ error: "Movie not found" });
     }
     res.json(movie);
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: "Server error" });
+  }
+});
+////
+app.put("/api/movies/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const updatedMovie = await Movie.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    if (!updatedMovie) {
+      return res.status(404).send("Movie not found");
+    }
+    res.status(200).json(updatedMovie);
+  } catch (error) {
+    console.error("Error updating movie:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
+// Delete Movie
+app.delete("/api/movies/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedMovie = await Movie.findByIdAndDelete(id);
+    if (!deletedMovie) {
+      return res.status(404).send("Movie not found");
+    }
+    res.status(200).send("Movie deleted successfully");
+  } catch (error) {
+    console.error("Error deleting movie:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 const port = 3000;
 app.listen(port, () => {

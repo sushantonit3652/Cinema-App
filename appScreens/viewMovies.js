@@ -6,26 +6,37 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
+  SafeAreaView,
 } from "react-native";
-
+import { useIsFocused } from "@react-navigation/native";
+import axios from "axios"; // Import Axios
+import BASE_URL from "../backend/config";
 const MovieDetails = ({ navigation }) => {
   const [movieList, setMovieList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const fetchMovies = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}api/movies`);
+      setMovieList(response.data);
+    } catch (error) {
+      setError("Error fetching movies");
+      console.error("Error fetching movies:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const isFocused = useIsFocused();
+
   useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const response = await fetch("http://192.168.1.33:3000/api/movies");
-        const data = await response.json();
-        setMovieList(data);
-      } catch (error) {
-        setError("Error fetching movies");
-        console.error("Error fetching movies:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (isFocused) {
+      fetchMovies();
+    }
+  }, [isFocused]);
+
+  useEffect(() => {
     fetchMovies();
   }, []);
 
@@ -46,7 +57,7 @@ const MovieDetails = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.movieContainer}>
+    <SafeAreaView style={styles.movieContainer}>
       <View style={styles.movieCardContainer}>
         <Text style={styles.headerText}>Movies List</Text>
         {movieList.length > 0 ? (
@@ -55,23 +66,38 @@ const MovieDetails = ({ navigation }) => {
             data={movieList}
             keyExtractor={(item) => item._id}
             renderItem={({ item }) => (
-              <TouchableOpacity
-                style={styles.card}
-                onPress={() =>
-                  navigation.navigate("MovieDetails", { movieId: item._id })
-                }
-              >
+              <View style={styles.card}>
                 <Text style={styles.movieName}>{item.name}</Text>
                 <Text style={styles.movieId}>ID: {item._id}</Text>
-                <Text style={styles.movieGenre}>language: {item.language}</Text>
-              </TouchableOpacity>
+                <Text style={styles.movieGenre}>Language: {item.language}</Text>
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity
+                    style={styles.updateButton}
+                    onPress={() =>
+                      navigation.navigate("updateMovies", {
+                        movie: item,
+                      })
+                    }
+                  >
+                    <Text style={styles.buttonText}>Update</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.deleteButton}
+                    onPress={() =>
+                      navigation.navigate("deleteMovies", { movieId: item._id })
+                    }
+                  >
+                    <Text style={styles.buttonText}>Delete</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
             )}
           />
         ) : (
           <Text style={styles.noMoviesText}>No movies found</Text>
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -80,6 +106,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     padding: 16,
+    marginVertical: 10,
   },
   movieCardContainer: {
     marginBottom: 16,
@@ -106,6 +133,25 @@ const styles = StyleSheet.create({
   movieGenre: {
     fontSize: 14,
     color: "#555",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+  },
+  updateButton: {
+    backgroundColor: "#4CAF50",
+    padding: 10,
+    borderRadius: 5,
+  },
+  deleteButton: {
+    backgroundColor: "#f44336",
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
   noMoviesText: {
     fontSize: 16,

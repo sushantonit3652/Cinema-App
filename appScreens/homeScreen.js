@@ -1,47 +1,45 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
-
 import {
+  StyleSheet,
+  TouchableOpacity,
   Image,
   TextInput,
   View,
   Text,
   FlatList,
-  Button,
   ScrollView,
   SafeAreaView,
 } from "react-native";
+import axios from "axios";
 import styles from "./styles";
-
+import BASE_URL from "../backend/config";
 const HomeScreen = ({ navigation }) => {
   const [movieList, setMovieList] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await fetch(
-          "http://192.168.1.33:3000/api/movies/recent",
+        const response = await axios.post(
+          `${BASE_URL}api/movies/recent`,
+
           {
-            method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            // Optionally, you can send data in the request body if your backend expects it
-            // body: JSON.stringify({ /* your data here */ }),
           }
         );
-        console.log(response);
-
-        const data = await response.json();
-
-        setMovieList(data);
+        setMovieList(response.data);
       } catch (error) {
-        console.error("new error:", data);
         console.error("Error fetching movies:", error);
       }
     };
     fetchMovies();
   }, []);
+
+  const filteredMovies = movieList.filter((movie) =>
+    movie.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <SafeAreaView
@@ -54,40 +52,35 @@ const HomeScreen = ({ navigation }) => {
         <Image
           style={styles.searchicon}
           source={require("../assets/searchicon.png")}
-        ></Image>
+        />
         <TextInput
           style={styles.home__serchtextinput}
           placeholder="Search"
-        ></TextInput>
+          onChangeText={setSearchQuery}
+          value={searchQuery}
+        />
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.movieCard_cnt}>
           <Text style={styles.headerText}>Continue Watching</Text>
-          {movieList.length > 0 ? (
-            <FlatList
-              showsHorizontalScrollIndicator={false}
-              horizontal
-              data={movieList}
-              keyExtractor={(item) => item._id}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={styles.card}
-                  onPress={() =>
-                    navigation.navigate("movieDetails", { movieId: item._id })
-                  }
-                >
-                  <Image
-                    source={{ uri: item.posterUrl }}
-                    style={styles.poster}
-                  />
-                  <Text style={styles.home__moviename}>{item.title}</Text>
-                </TouchableOpacity>
-              )}
-            />
-          ) : (
-            <Text>No movies found</Text>
-          )}
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            data={searchQuery.length > 0 ? filteredMovies : movieList}
+            keyExtractor={(item) => item._id}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.card}
+                onPress={() =>
+                  navigation.navigate("movieDetails", { movieId: item._id })
+                }
+              >
+                <Image source={{ uri: item.posterUrl }} style={styles.poster} />
+                <Text style={styles.home__moviename}>{item.title}</Text>
+              </TouchableOpacity>
+            )}
+          />
         </View>
         <View>
           <Text style={styles.headerText}>Trending Movies</Text>
@@ -99,7 +92,7 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles.headerText}>Full HD Movies</Text>
         </View>
         <View>
-          <Text style={styles.headerText}>Up Comming</Text>
+          <Text style={styles.headerText}>Upcoming</Text>
         </View>
         <View>
           <Text style={styles.headerText}>HBO</Text>

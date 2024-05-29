@@ -1,21 +1,11 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  ScrollView,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { View, Text, TextInput, ScrollView, TouchableOpacity, Alert } from "react-native";
 import axios from "axios";
 import styles from "./styles";
-
-
+import BASE_URL from "../backend/config";
 const Login = ({ navigation }) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // At least 8 characters, including one letter and one number
-
- 
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,6 +26,7 @@ const Login = ({ navigation }) => {
         return;
       }
 
+      // Optional validation (commented out)
       // if (!emailRegex.test(email)) {
       //   Alert.alert("Error", "Please enter a valid email address");
       //   return;
@@ -48,16 +39,14 @@ const Login = ({ navigation }) => {
       //   );
       //   return;
       // }
-      const response = await fetch("http://192.168.1.33:3000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+
+      const response = await axios.post(`${BASE_URL}login`, {
+        email,
+        password,
       });
 
       if (response.status === 200) {
-        const data = await response.json();
+        const data = response.data;
         if (data.status === "ok") {
           // Navigate to the home screen or next screen on successful login
           navigation.navigate("welcome");
@@ -78,8 +67,7 @@ const Login = ({ navigation }) => {
       } else if (response.status === 400) {
         Alert.alert("Error", "Invalid password");
       } else {
-        const data = await response.json();
-
+        const data = response.data;
         console.error("Server Error:", response.status);
         console.error("Server Error:", data.error);
         Alert.alert("Error", "Server Error");
@@ -114,7 +102,6 @@ const Login = ({ navigation }) => {
             <View style={styles.login__inputcnt}>
               <Text>Email</Text>
               <TextInput
-                xtInput
                 style={styles.input}
                 onChangeText={handleEmailChange}
                 value={email}
