@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Start from "./appScreens/start";
 import Welcome from "./appScreens/welcome";
 import Login from "./appScreens/login";
-import HomeScreen from "./appScreens/homeScreen";
 import MovieDetails from "./appScreens/movieDetails";
 import AdminPanel from "./appScreens/adminPanel";
 import VideoScreen from "./appScreens/videoScreen";
@@ -13,7 +12,7 @@ import ViewMovies from "./appScreens/viewMovies";
 import UsersScreen from "./appScreens/usersScreen";
 import DeleteMovies from "./appScreens/deleteMovies";
 import UpdateMovies from "./appScreens/upadateMovies";
-
+import BottomTabs from "./appScreens/bottomTabs";
 const Stack = createNativeStackNavigator();
 
 const MyStack = () => {
@@ -50,7 +49,7 @@ const MyStack = () => {
           component={ViewMovies}
           options={{ headerShown: false }}
         />
- <Stack.Screen
+        <Stack.Screen
           name="updateMovies"
           component={UpdateMovies}
           options={{ headerShown: false }}
@@ -65,11 +64,7 @@ const MyStack = () => {
           component={UsersScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="homeScreen"
-          component={HomeScreen}
-          options={{ headerShown: false }}
-        />
+
         <Stack.Screen
           name="movieDetails"
           component={MovieDetails}
@@ -78,6 +73,11 @@ const MyStack = () => {
         <Stack.Screen
           name="videoScreen"
           component={VideoScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="bottomTabs"
+          component={BottomTabs}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

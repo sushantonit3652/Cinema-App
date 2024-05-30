@@ -99,6 +99,18 @@ const DetailsSchema = new mongoose.Schema({
   // Add other fields if necessary
 });
 
+//genre
+const genreSchema = new mongoose.Schema({
+  name: { type: String, required: true }, // Name of the genre
+  description: { type: String }, // Optional description of the genre
+  // You can add more fields as needed
+});
+
+// Create a model based on the schema
+const Genre = mongoose.model('Genre', genreSchema);
+
+module.exports = Genre; 
+
 const Details = mongoose.model("Details", DetailsSchema);
 
 // Create a model based on the schema save movie
@@ -134,11 +146,12 @@ app.get("/api/movies", async (req, res) => {
 
 app.post("/api/movies/recent", async (req, res) => {
   try {
-    const recentMovies = await Movie.find().limit(18); // Fetch recent movies, adjust the limit as needed
+    const recentMovies = await Movie.find(); // Fetch recent movies, adjust the limit as needed
     const movieList = recentMovies.map((movie) => ({
       _id: movie._id,
       posterUrl: movie.poster,
       title: movie.name,
+      genre:movie.genre,
     }));
 
     res.json(movieList);
@@ -211,6 +224,16 @@ app.delete("/api/movies/:id", async (req, res) => {
   } catch (error) {
     console.error("Error deleting movie:", error);
     res.status(500).send("Internal Server Error");
+  }
+});
+// genre
+app.get("/api/genres", async (req, res) => {
+  try {
+    const genres = await Genre.find();
+    res.json(genres);
+  } catch (error) {
+    console.error("Error fetching genres:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 

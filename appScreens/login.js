@@ -3,6 +3,8 @@ import { View, Text, TextInput, ScrollView, TouchableOpacity, Alert } from "reac
 import axios from "axios";
 import styles from "./styles";
 import BASE_URL from "../backend/config";
+import BottomTabs from "./bottomTabs";
+
 const Login = ({ navigation }) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // At least 8 characters, including one letter and one number
@@ -52,7 +54,7 @@ const Login = ({ navigation }) => {
           navigation.navigate("welcome");
         } else if (data.status === "loginok") {
           // Navigate to the home screen or next screen on successful login
-          navigation.navigate("homeScreen");
+          navigation.navigate("bottomTabs");
         } else if (data.status === "adminloginok") {
           // Navigate to the home screen or next screen on successful login
           navigation.navigate("adminPanel");
@@ -135,7 +137,7 @@ const Login = ({ navigation }) => {
               </Text>
               <Text
                 style={styles.login__skipLink}
-                onPress={() => navigation.navigate("homeScreen")}
+                onPress={() => navigation.navigate("bottomTabs")}
               >
                 Skip it
               </Text>

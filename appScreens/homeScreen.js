@@ -7,12 +7,12 @@ import {
   View,
   Text,
   FlatList,
-  ScrollView,
   SafeAreaView,
 } from "react-native";
 import axios from "axios";
 import styles from "./styles";
 import BASE_URL from "../backend/config";
+
 const HomeScreen = ({ navigation }) => {
   const [movieList, setMovieList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -20,15 +20,11 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await axios.post(
-          `${BASE_URL}api/movies/recent`,
-
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await axios.post(`${BASE_URL}api/movies/recent`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         setMovieList(response.data);
       } catch (error) {
         console.error("Error fetching movies:", error);
@@ -45,7 +41,7 @@ const HomeScreen = ({ navigation }) => {
     <SafeAreaView
       style={[
         styles.homeScreencnt,
-        { marginHorizontal: 10, marginVertical: "15%" },
+        { marginHorizontal: 5, marginVertical: "10%" },
       ]}
     >
       <View style={styles.home__searchbackground}>
@@ -61,43 +57,26 @@ const HomeScreen = ({ navigation }) => {
         />
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.movieCard_cnt}>
-          <Text style={styles.headerText}>Continue Watching</Text>
-          <FlatList
-            showsHorizontalScrollIndicator={false}
-            horizontal
-            data={searchQuery.length > 0 ? filteredMovies : movieList}
-            keyExtractor={(item) => item._id}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={styles.card}
-                onPress={() =>
-                  navigation.navigate("movieDetails", { movieId: item._id })
-                }
-              >
-                <Image source={{ uri: item.posterUrl }} style={styles.poster} />
-                <Text style={styles.home__moviename}>{item.title}</Text>
-              </TouchableOpacity>
-            )}
-          />
-        </View>
-        <View>
-          <Text style={styles.headerText}>Trending Movies</Text>
-        </View>
-        <View>
-          <Text style={styles.headerText}>New Release</Text>
-        </View>
-        <View>
-          <Text style={styles.headerText}>Full HD Movies</Text>
-        </View>
-        <View>
-          <Text style={styles.headerText}>Upcoming</Text>
-        </View>
-        <View>
-          <Text style={styles.headerText}>HBO</Text>
-        </View>
-      </ScrollView>
+      <View style={styles.movieCard_cnt}>
+        <Text style={styles.headerText}>All Movies</Text>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={searchQuery.length > 0 ? filteredMovies : movieList}
+          keyExtractor={(item) => item._id}
+          numColumns={3}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+            
+              onPress={() =>
+                navigation.navigate("movieDetails", { movieId: item._id })
+              }
+            >
+              <Image source={{ uri: item.posterUrl }} style={styles.poster} />
+              <Text style={styles.home__moviename}>{item.title}</Text>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
     </SafeAreaView>
   );
 };

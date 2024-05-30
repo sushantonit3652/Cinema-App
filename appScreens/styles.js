@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginVertical: 10,
-    marginLeft: 10,
+    marginLeft: 5,
     color: "#DA004E",
   },
 
@@ -256,15 +256,16 @@ const styles = StyleSheet.create({
   },
 
   movieCard: {
-    margin: 10,
+    margin: 8,
     borderRadius: 8,
     overflow: "hidden",
     backgroundColor: "#f0f0f0",
     alignItems: "center",
+  
   },
   moviePoster: {
-    width: 150,
-    height: 200,
+    width: 100,
+    height: 170,
   },
   movieTitle: {
     fontSize: 16,
@@ -275,8 +276,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     alignItems: "center",
   },
-  home__moviename:{fontWeight:'600',marginHorizontal:11,marginVertical:3},
-  movieCard_cnt:{justifyContent:'center',},
+  home__moviename:{fontWeight:'600',marginHorizontal:5,marginVertical:3},
+  movieCard_cnt:{justifyContent:'center',marginBottom:"33%"},
   //movieDetail Screen,
   movieContainer: { flex: 1 },
   movieDetail__background: {
@@ -310,7 +311,7 @@ const styles = StyleSheet.create({
     height: 180,
     resizeMode: "cover",
     borderRadius: 10,
-    marginHorizontal: 10,
+    marginHorizontal: 5,
   },
   title: {
     fontSize: 16,
