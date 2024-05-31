@@ -45,7 +45,7 @@ const UpdateMovies = ({ route, navigation }) => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.label}>ID:</Text>
+        <Text style={styles.label}>Type:</Text>
         <TextInput style={styles.input} value={id} onChangeText={setId} />
         <Text style={styles.label}>Name:</Text>
         <TextInput style={styles.input} value={name} onChangeText={setName} />

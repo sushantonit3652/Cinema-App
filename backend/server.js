@@ -78,7 +78,7 @@ app.post("/login", async (req, res) => {
 //movie Api
 const movieSchema = new mongoose.Schema(
   {
-    id: { type: String, required: true },
+    type: { type: String, required: true },
     name: { type: String, required: true },
     duration: { type: String, required: true },
     genre: { type: String, required: true },
@@ -132,8 +132,8 @@ app.post("/movies", async (req, res) => {
 //movies view admin
 app.get("/api/movies", async (req, res) => {
   try {
-    const movies = await Movie.find().select(
-      "id name language duration genre poster description video"
+    const movies = await Movie.find().sort({ _id: -1}).select(
+      "type name language duration genre poster description video"
     ); // Select only id, name, and createdAt
     res.json(movies);
   } catch (error) {
@@ -146,12 +146,13 @@ app.get("/api/movies", async (req, res) => {
 
 app.post("/api/movies/recent", async (req, res) => {
   try {
-    const recentMovies = await Movie.find(); // Fetch recent movies, adjust the limit as needed
+    const recentMovies = await Movie.find().sort({ _id: -1}); // Fetch recent movies, adjust the limit as needed
     const movieList = recentMovies.map((movie) => ({
       _id: movie._id,
       posterUrl: movie.poster,
       title: movie.name,
       genre:movie.genre,
+      type:movie.type,
     }));
 
     res.json(movieList);

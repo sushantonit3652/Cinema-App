@@ -23,7 +23,17 @@ const genres = [
   "Thriller",
 ];
 
-const CategoryScreen = ({navigation}) => {
+const colors = [
+  "#FF5733",
+  "#33FF57",
+  "#3357FF",
+  "#FF33A6",
+  "#FF8C33",
+  "#FF5733",
+  "#C70039",
+];
+
+const CategoryScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("");
   const [movies, setMovies] = useState([]);
@@ -72,13 +82,14 @@ const CategoryScreen = ({navigation}) => {
 
   const handleGenrePress = (genre) => {
     setSelectedGenre(genre);
-    setSearchText(""); // Clear search text when a genre is selected
+    setSearchText(genre); // Set search text to the selected genre
   };
 
-  const renderGenre = ({ item }) => (
+  const renderGenre = ({ item, index }) => (
     <TouchableOpacity
       style={[
         styles.genreButton,
+        { backgroundColor: colors[index % colors.length] },
         selectedGenre === item && styles.selectedGenreButton,
       ]}
       onPress={() => handleGenrePress(item)}
@@ -119,6 +130,7 @@ const CategoryScreen = ({navigation}) => {
             key={index}
             style={[
               styles.genreButton,
+              { backgroundColor: colors[index % colors.length] },
               selectedGenre === genre && styles.selectedGenreButton,
             ]}
             onPress={() => handleGenrePress(genre)}
@@ -146,14 +158,17 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     backgroundColor: "#fff",
-    marginVertical:20
+    marginVertical: 20,
   },
   searchBar: {
     height: 40,
-    borderColor: "gray",
+    borderColor: "#ccc",
     borderWidth: 1,
-    paddingLeft: 8,
-    marginBottom: 10,
+    paddingLeft: 10,
+    marginBottom: 20,
+    borderRadius: 20,
+    backgroundColor: "#f0f0f0",
+    fontSize: 16,
   },
   genreContainer: {
     flexDirection: "row",
@@ -162,19 +177,20 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   genreButton: {
-    backgroundColor: "#ddd",
     padding: 10,
     marginRight: 10,
     marginBottom: 10,
-    borderRadius: 5,
+    borderRadius: 20,
     width: "30%",
     alignItems: "center",
   },
   selectedGenreButton: {
-    backgroundColor: "#aaa",
+    borderWidth: 2,
+    borderColor: "#000",
   },
   genreText: {
     fontSize: 16,
+    color: "#fff",
   },
   movieList: {
     flex: 1,
@@ -188,15 +204,13 @@ const styles = StyleSheet.create({
     height: 150,
     resizeMode: "cover",
     marginBottom: 5,
+    borderRadius: 10,
   },
   movieTitle: {
-    fontSize: 14,
+    fontWeight: "600",
+    marginHorizontal: 5,
+    marginVertical: 3,
     textAlign: "center",
-  },
-  movieGenre: {
-    fontSize: 12,
-    textAlign: "center",
-    color: "gray",
   },
 });
 

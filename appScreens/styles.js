@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   home__searchbackground: {
     flexDirection: "row",
     height: 54,
-    width: "100%",
+    width: "90%",
     alignItems: "center",
     borderWidth: 1,
     borderColor: "#DA004E",
@@ -206,78 +206,135 @@ const styles = StyleSheet.create({
   // movie api styling
   container: {
     flex: 1,
-    padding: 10,
     backgroundColor: "#fff",
-    height: 200,
   },
-  movieItem: {
+  home__searchbackground: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    borderRadius: 5,
-  },
-  movieImage: {
-    width: 80,
-    height: 80,
-    marginRight: 10,
-    borderRadius: 5,
-  },
-  movieName: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  movieDuration: {
-    fontSize: 16,
-    color: "#888",
-  },
-  movieCard: {
     margin: 10,
     padding: 10,
     backgroundColor: "#f0f0f0",
     borderRadius: 8,
+  },
+  searchicon: {
+    width: 20,
+    height: 20,
+    marginRight: 10,
+  },
+  home__serchtextinput: {
+    flex: 1,
+  },
+  movieCard_cnt: {
+    justifyContent: "center",
     alignItems: "center",
   },
-  moviePoster: {
-    width: 150,
-    height: 200,
-    marginBottom: 10,
-    borderRadius: 8,
-  },
-  movieTitle: {
-    fontSize: 16,
+  headerText: {
+    fontSize: 18,
     fontWeight: "bold",
+    marginVertical: 10,
   },
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-
   movieCard: {
     margin: 8,
     borderRadius: 8,
     overflow: "hidden",
     backgroundColor: "#f0f0f0",
     alignItems: "center",
-  
   },
   moviePoster: {
     width: 100,
     height: 170,
   },
-  movieTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginVertical: 5,
+  home__moviename: {
+    fontWeight: "600",
+    marginHorizontal: 5,
+    marginVertical: 3,
   },
-  buttonContainer: {
-    marginVertical: 10,
-    alignItems: "center",
-  },
-  home__moviename:{fontWeight:'600',marginHorizontal:5,marginVertical:3},
-  movieCard_cnt:{justifyContent:'center',marginBottom:"33%"},
+
+
+
+
+  // container: {
+  //   flex: 1,
+  //   padding: 10,
+  //   backgroundColor: "#fff",
+  //   height: 200,
+  // },
+  // movieItem: {
+  //   flexDirection: "row",
+  //   alignItems: "center",
+  //   marginBottom: 10,
+  //   borderWidth: 1,
+  //   borderColor: "#ccc",
+  //   padding: 10,
+  //   borderRadius: 5,
+  // },
+  // movieImage: {
+  //   width: 80,
+  //   height: 80,
+  //   marginRight: 10,
+  //   borderRadius: 5,
+  // },
+  // movieName: {
+  //   fontSize: 18,
+  //   fontWeight: "bold",
+  // },
+  // movieDuration: {
+  //   fontSize: 16,
+  //   color: "#888",
+  // },
+  // movieCard: {
+  //   margin: 10,
+  //   padding: 10,
+  //   backgroundColor: "#f0f0f0",
+  //   borderRadius: 8,
+  //   alignItems: "center",
+  // },
+  // moviePoster: {
+  //   width: 150,
+  //   height: 200,
+  //   marginBottom: 10,
+  //   borderRadius: 8,
+  // },
+  // movieTitle: {
+  //   fontSize: 16,
+  //   fontWeight: "bold",
+  // },
+  // container: {
+  //   flex: 1,
+  //   backgroundColor: "#fff",
+  // },
+
+  // movieCard: {
+  //   margin: 8,
+  //   borderRadius: 8,
+  //   overflow: "hidden",
+  //   backgroundColor: "#f0f0f0",
+  //   alignItems: "center",
+  
+  // },
+  // moviePoster: {
+  //   width: 100,
+  //   height: 170,
+  // },
+  // movieTitle: {
+  //   fontSize: 16,
+  //   fontWeight: "bold",
+  //   marginVertical: 5,
+  // },
+  // buttonContainer: {
+  //   marginVertical: 10,
+  //   alignItems: "center",
+  // },
+  // home__moviename:{
+  //   fontWeight:'600',
+  //   marginHorizontal:5,
+  //   marginVertical:3
+  // },
+  // movieCard_cnt:{
+  //   justifyContent:'center',
+  //   alignItems:'center'
+  // },
+
   //movieDetail Screen,
   movieContainer: { flex: 1 },
   movieDetail__background: {

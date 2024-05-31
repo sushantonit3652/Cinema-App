@@ -61,7 +61,7 @@ const AddMovies = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.label}>ID:</Text>
+        <Text style={styles.label}>Type:</Text>
         <TextInput
           style={styles.input}
           value={formData.id}

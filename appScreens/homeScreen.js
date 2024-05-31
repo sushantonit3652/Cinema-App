@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  StyleSheet,
   TouchableOpacity,
   Image,
   TextInput,
@@ -8,9 +7,10 @@ import {
   Text,
   FlatList,
   SafeAreaView,
+  Dimensions,
+  StyleSheet,
 } from "react-native";
 import axios from "axios";
-import styles from "./styles";
 import BASE_URL from "../backend/config";
 
 const HomeScreen = ({ navigation }) => {
@@ -38,26 +38,21 @@ const HomeScreen = ({ navigation }) => {
   );
 
   return (
-    <SafeAreaView
-      style={[
-        styles.homeScreencnt,
-        { marginHorizontal: 5, marginVertical: "10%" },
-      ]}
-    >
-      <View style={styles.home__searchbackground}>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.searchContainer}>
         <Image
-          style={styles.searchicon}
+          style={styles.searchIcon}
           source={require("../assets/searchicon.png")}
         />
         <TextInput
-          style={styles.home__serchtextinput}
+          style={styles.searchInput}
           placeholder="Search"
           onChangeText={setSearchQuery}
           value={searchQuery}
         />
       </View>
 
-      <View style={styles.movieCard_cnt}>
+      <View style={styles.movieContainer}>
         <Text style={styles.headerText}>All Movies</Text>
         <FlatList
           showsVerticalScrollIndicator={false}
@@ -66,13 +61,14 @@ const HomeScreen = ({ navigation }) => {
           numColumns={3}
           renderItem={({ item }) => (
             <TouchableOpacity
-            
               onPress={() =>
                 navigation.navigate("movieDetails", { movieId: item._id })
               }
             >
-              <Image source={{ uri: item.posterUrl }} style={styles.poster} />
-              <Text style={styles.home__moviename}>{item.title}</Text>
+              <View style={styles.movieCard}>
+                <Image source={{ uri: item.posterUrl }} style={styles.moviePoster} />
+                <Text style={styles.movieTitle}>{item.title}</Text>
+              </View>
             </TouchableOpacity>
           )}
         />
@@ -80,5 +76,57 @@ const HomeScreen = ({ navigation }) => {
     </SafeAreaView>
   );
 };
+
+const { width } = Dimensions.get("window");
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    padding: 10,
+  },
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    margin: 10,
+    padding: 10,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 8,
+  },
+  searchIcon: {
+    width: 20,
+    height: 20,
+    marginRight: 10,
+  },
+  searchInput: {
+    flex: 1,
+  },
+  movieContainer: {
+    flex: 1,
+    alignItems: "center",
+  },
+  headerText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginVertical: 10,alignSelf:"flex-start"
+  },
+  movieCard: {
+    width: (width - 60) / 3, // Adjust the width of movie cards to fit three in a row with margins
+    margin: 8,
+    borderRadius: 8,
+    overflow: "hidden",
+    backgroundColor: "#f0f0f0",
+    alignItems: "center",
+  },
+  moviePoster: {
+    width: "100%",
+    height: 170,
+  },
+  movieTitle: {
+    fontWeight: "600",
+    marginHorizontal: 5,
+    marginVertical: 3,
+   textAlign:"center"
+  },
+});
 
 export default HomeScreen;

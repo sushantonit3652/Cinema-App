@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, ScrollView, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import axios from "axios";
 import styles from "./styles";
 import BASE_URL from "../backend/config";
@@ -28,24 +35,16 @@ const Login = ({ navigation }) => {
         return;
       }
 
-      // Optional validation (commented out)
-      // if (!emailRegex.test(email)) {
-      //   Alert.alert("Error", "Please enter a valid email address");
-      //   return;
-      // }
-
-      // if (!passwordRegex.test(password)) {
-      //   Alert.alert(
-      //     "Error",
-      //     "Password must be at least 8 characters long and include both letters and numbers"
-      //   );
-      //   return;
-      // }
+      console.log('Sending request to:', `${BASE_URL}login`);
+      console.log('Request data:', { email, password });
 
       const response = await axios.post(`${BASE_URL}login`, {
         email,
         password,
       });
+
+      console.log('Response status:', response.status);
+      console.log('Response data:', response.data);
 
       if (response.status === 200) {
         const data = response.data;
