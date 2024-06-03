@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "movie",
+    "name": "Cinema+",
     "slug": "movie",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.sushantonit.movie"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "482b4a70-3a1f-47b2-9119-0366012e3df7"
+      }
     }
   }
 }
