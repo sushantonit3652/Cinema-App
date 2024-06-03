@@ -598,7 +598,7 @@ const VideoScreen = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000",
+    backgroundColor: "black",
   },
 
   loadingContainer: {
@@ -609,7 +609,9 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#000",
+    backgroundColor: "black",
+    width: "100%",
+    height: "100%",
   },
 });
 

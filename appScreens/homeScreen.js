@@ -16,6 +16,7 @@ import BASE_URL from "../backend/config";
 const HomeScreen = ({ navigation }) => {
   const [movieList, setMovieList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [filteredMovies, setFilteredMovies] = useState([]);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -26,6 +27,7 @@ const HomeScreen = ({ navigation }) => {
           },
         });
         setMovieList(response.data);
+        setFilteredMovies(response.data);
       } catch (error) {
         console.error("Error fetching movies:", error);
       }
@@ -33,9 +35,19 @@ const HomeScreen = ({ navigation }) => {
     fetchMovies();
   }, []);
 
-  const filteredMovies = movieList.filter((movie) =>
-    movie.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    if (query.trim() === "") {
+      setFilteredMovies(movieList);
+    } else {
+      const filtered = movieList.filter((movie) =>
+        movie.title.toLowerCase().includes(query.toLowerCase()) ||
+        movie.type.toLowerCase().includes(query.toLowerCase()) ||
+        movie.genre.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredMovies(filtered);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -46,8 +58,8 @@ const HomeScreen = ({ navigation }) => {
         />
         <TextInput
           style={styles.searchInput}
-          placeholder="Search"
-          onChangeText={setSearchQuery}
+          placeholder="Search by name, type, or genre"
+          onChangeText={handleSearch}
           value={searchQuery}
         />
       </View>
@@ -56,7 +68,7 @@ const HomeScreen = ({ navigation }) => {
         <Text style={styles.headerText}>All Movies</Text>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={searchQuery.length > 0 ? filteredMovies : movieList}
+          data={filteredMovies}
           keyExtractor={(item) => item._id}
           numColumns={3}
           renderItem={({ item }) => (
@@ -107,7 +119,9 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 18,
     fontWeight: "bold",
-    marginVertical: 10,alignSelf:"flex-start"
+    marginVertical: 15,
+    marginHorizontal:10,
+    alignSelf:"flex-start"
   },
   movieCard: {
     width: (width - 60) / 3, // Adjust the width of movie cards to fit three in a row with margins

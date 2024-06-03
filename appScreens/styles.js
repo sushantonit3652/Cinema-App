@@ -250,9 +250,6 @@ const styles = StyleSheet.create({
     marginVertical: 3,
   },
 
-
-
-
   // container: {
   //   flex: 1,
   //   padding: 10,
@@ -310,7 +307,7 @@ const styles = StyleSheet.create({
   //   overflow: "hidden",
   //   backgroundColor: "#f0f0f0",
   //   alignItems: "center",
-  
+
   // },
   // moviePoster: {
   //   width: 100,
@@ -340,6 +337,7 @@ const styles = StyleSheet.create({
   movieDetail__background: {
     flex: 1,
     width: "100%",
+    
     // position: "absolute",
   },
   movidetail__fottrbackround: {
@@ -347,12 +345,14 @@ const styles = StyleSheet.create({
   },
   movidetail__sciencebacground: {
     flexDirection: "row",
-    justifyContent: "space-between",alignSelf: 'stretch',
+    justifyContent: "space-between",
+    alignSelf: "stretch",
   },
   sciencetext: { fontSize: 16, color: "#000", fontWeight: "500" },
   movidetail__ditailbackground: {
     flexDirection: "row",
-    justifyContent: "space-between",paddingVertical:20
+    justifyContent: "space-between",
+    paddingVertical: 20,
   },
   movidetail__datebackground: {
     flexDirection: "row",
@@ -373,64 +373,65 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "bold",
-  }, movieContainer: {
+  },
+  movieContainer: {
     flex: 1,
   },
   movieDetail__background: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   movieDetail__content: {
     padding: 20,
   },
   movieTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontWeight: "bold",
+    color: "#fff",
   },
   movieGenre: {
     fontSize: 18,
-    color: '#fff',
+    color: "#fff",
   },
   movieDuration: {
     fontSize: 16,
-    color: '#fff',
+    color: "#fff",
   },
   movieReleaseDate: {
     fontSize: 16,
-    color: '#fff',
+    color: "#fff",
   },
   movieLanguage: {
     fontSize: 16,
-    color: '#fff',
+    color: "#fff",
   },
   movieDetail__footer: {
     padding: 20,
   },
   nextButton: {
-    backgroundColor: '#1e90ff',
+    backgroundColor: "#1e90ff",
     padding: 15,
     borderRadius: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   nextButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
   },
   loader: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   errorContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   errorText: {
     fontSize: 18,
-    color: 'red',
+    color: "red",
   },
 });
 

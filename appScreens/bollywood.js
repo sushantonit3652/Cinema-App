@@ -7,6 +7,7 @@ import {
   View,
   Image,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
 import axios from "axios";
 import BASE_URL from "../backend/config";
@@ -21,9 +22,11 @@ const MovieCard = ({ movie, navigation }) => (
   </TouchableOpacity>
 );
 
-const Bollywood = ({navigation}) => {
+const Bollywood = ({ navigation }) => {
   const [movies, setMovies] = useState([]);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredMovies, setFilteredMovies] = useState([]);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -34,7 +37,9 @@ const Bollywood = ({navigation}) => {
             "Content-Type": "application/json",
           },
         });
-        setMovies(response.data.filter((movie) => movie.type === "Bollywood"));
+        setMovies(
+          response.data.filter((movie) => movie.type === "Bollywood")
+        );
       } catch (error) {
         console.error("Error fetching movies:", error);
         setError("Error fetching movies");
@@ -43,15 +48,37 @@ const Bollywood = ({navigation}) => {
     fetchMovies();
   }, []);
 
+  useEffect(() => {
+    setFilteredMovies(
+      movies.filter((movie) =>
+        movie.title.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    );
+  }, [searchQuery, movies]);
+
   return (
     <SafeAreaView style={styles.container}>
+
+<View style={styles.searchContainer}>
+        <Image
+          style={styles.searchIcon}
+          source={require("../assets/searchicon.png")}
+        />
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search"
+          onChangeText={(text) => setSearchQuery(text)}
+          value={searchQuery}
+        />
+      </View>
+
       <Text style={styles.headerText}>Bollywood Movies</Text>
       {error ? (
         <Text style={styles.errorText}>{error}</Text>
       ) : (
         <ScrollView contentContainerStyle={styles.movieContainer}>
-          {movies.map((movie) => (
-            <MovieCard key={movie._id} movie={movie}  navigation={navigation}/>
+          {filteredMovies.map((movie) => (
+            <MovieCard key={movie._id} movie={movie} navigation={navigation} />
           ))}
         </ScrollView>
       )}
@@ -64,6 +91,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     padding: 10,
+  },
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    margin: 10,
+    padding: 10,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 8,
+  },
+  searchIcon: {
+    width: 20,
+    height: 20,
+    marginRight: 10,
   },
   movieContainer: {
     flexDirection: "row",
@@ -98,6 +138,9 @@ const styles = StyleSheet.create({
     color: "red",
     textAlign: "center",
     marginTop: 20,
+  },
+  searchInput: {
+    flex: 1,
   },
 });
 

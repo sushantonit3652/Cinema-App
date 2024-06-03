@@ -73,7 +73,7 @@ const MyStack = () => {
         <Stack.Screen
           name="videoScreen"
           component={VideoScreen}
-          options={{ headerShown: false }}
+          options={{ headerShown: false ,}}
         />
         <Stack.Screen
           name="bottomTabs"

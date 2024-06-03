@@ -118,12 +118,19 @@ const CategoryScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.searchBar}
-        placeholder="Search..."
-        value={searchText}
-        onChangeText={setSearchText}
-      />
+      <View style={styles.searchContainer}>
+        <Image
+          style={styles.searchIcon}
+          source={require("../assets/searchicon.png")}
+        />
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search"
+          value={searchText}
+          onChangeText={setSearchText}
+        />
+      </View>
+  
       <View style={styles.genreContainer}>
         {genres.map((genre, index) => (
           <TouchableOpacity
@@ -158,7 +165,23 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     backgroundColor: "#fff",
-    marginVertical: 20,
+    
+  },
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    margin: 10,
+    padding: 10,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 8,
+  },
+  searchIcon: {
+    width: 20,
+    height: 20,
+    marginRight: 10,
+  },
+  searchInput: {
+    flex: 1,
   },
   searchBar: {
     height: 40,
